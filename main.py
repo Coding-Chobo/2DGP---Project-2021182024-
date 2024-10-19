@@ -8,8 +8,21 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+        elif event.type == SDL_KEYDOWN:
+            if event.key == SDLK_ESCAPE:
+                running = False
+            elif event.key == SDLK_LEFT:
+                if map.data[worker.y][worker.x - 1] == 0:
+                    worker.x -= 1
+            elif event.key == SDLK_RIGHT:
+                if map.data[worker.y][worker.x + 1] == 0:
+                    worker.x += 1
+            elif event.key == SDLK_UP:
+                if map.data[worker.y + 1][worker.x] == 0:
+                    worker.y += 1
+            elif event.key == SDLK_DOWN:
+                if map.data[worker.y - 1][worker.x] == 0:
+                    worker.y -= 1
 def reset_world():
     global running
     global map
@@ -35,7 +48,7 @@ def render_world():
         o.draw()
     update_canvas()
 
-open_canvas(800,717)
+open_canvas(800,800)
 
 # initialization code
 reset_world()
