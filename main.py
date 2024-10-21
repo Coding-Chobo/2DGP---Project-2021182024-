@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r"C:\Users\dbdal\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages")
 from pico2d import *
 import random
 from object_1 import *
