@@ -8,10 +8,12 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             running = False
-        elif event.type == SDL_KEYDOWN:
+        elif event.type == SDL_KEYDOWN: 
             if event.key == SDLK_ESCAPE:
                 running = False
-            if worker.dir == 0:
+            elif event.key == SDLK_x: # 들고있는 음식 회전 시키기
+                worker.rotate = True
+            if worker.dir == 0: # 멈춰있을때
                 if event.key == SDLK_LEFT:
                     if map.data[worker.y][worker.x - 1] == 0:
                         worker.dir = 1
@@ -21,6 +23,10 @@ def handle_events():
                 elif event.key == SDLK_RIGHT:
                     if map.data[worker.y][worker.x + 1] == 0:
                         worker.dir = 2
+                    elif map.data[worker.y][worker.x + 1] == 9: #쓰레기통
+                        if worker.plate[2] != 0:
+                            worker.plate[2] = 0
+                            point.trashcnt += 1
                 elif event.key == SDLK_UP:
                     if map.data[worker.y + 1][worker.x] == 0:
                         worker.dir = 4
@@ -31,67 +37,22 @@ def handle_events():
                 elif event.key == SDLK_SPACE:
                     if worker.x == 6:
                         if worker.y >= 1 and worker.y <= 6:
-                            food = map.data[worker.y][worker.x+1]
-                            if food == 3: #라면
-                                if worker.cook_step[food -3] < 5:
-                                    worker.cook_step[food -3] += 1
-                                else:
-                                   for i in range(4):
-                                      if worker.plate[i] == 0:
-                                        worker.plate[i] = food 
-                                        break
-                            elif food == 4: #순대
-                                if worker.cook_step[food -3] < 4:
-                                    worker.cook_step[food -3] += 1       
-                                else:
-                                   for i in range(4):
-                                      if worker.plate[i] == 0:
-                                        worker.plate[i] = food
-                                        break                                              
-                            elif food == 5: #김밥
-                                if worker.cook_step[food -3] < 5:
-                                    worker.cook_step[food -3] += 1
-                                else:
-                                   for i in range(4):
-                                      if worker.plate[i] == 0:
-                                        worker.plate[i] = food
-                                        break                                 
-                            elif food == 6: #떡볶이
-                                if worker.cook_step[food -3] < 4:
-                                    worker.cook_step[food -3] += 1       
-                                else:
-                                   for i in range(4):
-                                      if worker.plate[i] == 0:
-                                        worker.plate[i] = food        
-                                        break
-                            elif food == 7: #튀김
-                                if worker.cook_step[food -3] < 5:
-                                    worker.cook_step[food -3] += 1
-                                else:
-                                   for i in range(4):
-                                      if worker.plate[i] == 0:
-                                        worker.plate[i] = food
-                                        break
-                            elif food == 8: #물
-                                for i in range(4):
-                                    if worker.plate[i] == 0:
-                                        worker.plate[i] = food
-                                        break
-                            
+                            worker.cook_type = map.data[worker.y][worker. x + 1] - 3
+                        
 def reset_world():
     global running
     global map
     global worker
     global world
-    global tables
+    global point
     running = True
     world = []
-    tables = [ Table() for n in range(6)]
-    map = Map() 
-    worker = Worker()
+    point = Point()
+    map = Map()
+    worker = Worker(map)
     world.append(map)
     world.append(worker)
-    world += tables
+
 def update_world():
     for o in world:
         o.update()
