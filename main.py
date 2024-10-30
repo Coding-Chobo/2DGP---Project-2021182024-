@@ -15,11 +15,25 @@ def handle_events():
                 worker.rotate = True
             if worker.dir == 0: # 멈춰있을때
                 if event.key == SDLK_LEFT:
-                    if map.data[worker.y][worker.x - 1] == 0:
-                        worker.dir = 1
-                    elif map.data[worker.y][worker.x - 1] == 2:
-                        #if worker.plate[0] == 
-                        pass
+                    cell = map.data[worker.y][worker.x - 1]
+                    if isinstance(cell, tuple):
+                        order = 0
+                        table_number = cell[1]
+                        if map.tables[table_number].is_active:
+                            for i in range(4):
+                                if map.tables[table_number].step == 0 and worker.plate[i] == 8:
+                                    map.tables[table_number].step = 1
+                                    worker.plate[i] = 0
+                                    for n in range(map.tables[table_number].guest_amount):
+                                        order += map.tables[table_number].guest[n].type
+                                break
+                            for i in range(order): # 수정필요 딕셔너리 안에 키가 같으면 거기에 추가하는 형식으로 하고싶음 order의 딕셔너리를 기본값을 세팅해줘야됌
+                                map.tables[table_number].order = {random.randint(0,4)+ 3:1}
+                    else:
+                        if cell == 0:
+                            worker.dir = 1
+                        #달봉이(배달부)에게 전달하는 조건 추가
+
                 elif event.key == SDLK_RIGHT:
                     if map.data[worker.y][worker.x + 1] == 0:
                         worker.dir = 2

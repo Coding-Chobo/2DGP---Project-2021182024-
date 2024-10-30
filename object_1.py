@@ -45,7 +45,7 @@ class Map:
         self.menu_frame =(self.menu_frame + 1) % 2
         if self.get_table_time < self.get_table_limit_time :
             self.get_table_time += 1
-        else:
+        else: #일정 시간넘어가면 빈테이블을 찾아 정보 초기화
             list = []
             for b in range(6):
                 if self.tables[b].is_active == False:
@@ -56,9 +56,15 @@ class Map:
             c = random.randint(1,2)
             self.tables[i].is_active = True
             self.tables[i].guest_amount = c
-            print(i , c)
+            order = 0
             for a in range(c):
-                self.tables[i].guest[a] = Guest(random.randint(1,2))
+                b = random.randint(1,2)
+                order += b #삭제고려대상
+                self.tables[i].guest[a] = Guest(b)
+            
+            #for n in range(order):
+            #   self.tables.order = {}
+            #생성 타이머 초기화
             self.get_table_time=0
 
         
@@ -79,6 +85,7 @@ class Worker:
         
         self.plate = [0, 0, 0, 0]
         self.image = load_image('resource/character.png')
+        
         self.cooking_sprite = load_image('resource/food_sprite.png')
         self.kimbap = load_image('resource/kimbap.png')
         self.fry = load_image('resource/fry.png')
@@ -92,13 +99,12 @@ class Worker:
 
     def update(self):
         if self.dir == 1:  # 왼쪽으로 이동
-            if self.map.is_walkable(int(self.x - 1), int(self.y)):
-                if self.frame_x > -1:
-                    self.frame_x -= self.speed
-                else:
-                    self.frame_x = 0
-                    self.x -= 1
-                    self.dir = 0
+            if self.frame_x > -1:
+                self.frame_x -= self.speed
+            else:
+                self.frame_x = 0
+                self.x -= 1
+                self.dir = 0
         elif self.dir == 2:  # 오른쪽으로 이동
             if self.map.is_walkable(int(self.x + 1), int(self.y)):
                 if self.frame_x < 1:
