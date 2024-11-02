@@ -29,7 +29,7 @@ def handle_events():
                                 break
                             for i in range(order): # 수정필요 딕셔너리 안에 키가 같으면 거기에 추가하는 형식으로 하고싶음 order의 딕셔너리를 기본값을 세팅해줘야됌
                                 map.tables[table_number].order = {random.randint(0,4)+ 3:1}
-                    else:
+                    else: 
                         if cell == 0:
                             worker.dir = 1
                         #달봉이(배달부)에게 전달하는 조건 추가
