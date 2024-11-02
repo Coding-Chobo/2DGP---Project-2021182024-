@@ -93,10 +93,12 @@ class Worker:
         self.ttukbokki = load_image('resource/ttukbokki.png')
         self.ramen = load_image('resource/ramen.png')
         self.water = load_image('resource/water.png')
-        
+        self.gaze = load_image('gaze_sprite.png')
+        self.alba = load_image('ALBA_sprite.pnt')
         self.cook_step = [0, 0, 0, 0, 0]
         self.cook_type = 10
 
+        self.Alba.image
     def update(self):
         if self.dir == 1:  # 왼쪽으로 이동
             if self.frame_x > -1:
@@ -200,7 +202,10 @@ class Worker:
                 self.fry.clip_composite_draw(0,0,self.frame_size,self.frame_size,PI/2 * (i + 2),'',(self.x + self.frame_x+2) * 75 + xgap, (self.y + self.frame_y) * 67 + 75 + ygap)
             elif self.plate[i] == 8:#물
                 self.water.clip_composite_draw(0,0,self.frame_size,self.frame_size,PI/2 * (i + 2),'',(self.x + self.frame_x+2) * 75 + xgap, (self.y + self.frame_y) * 67 + 75 + ygap)
-       
+       # 음식그리기
+        for i in range(5):
+            self.gaze.clip_draw(self.cook_step[i] * 32,0,32,96,700,400,20,100)
+
 
 class Table:
     def __init__(self):
@@ -243,3 +248,11 @@ class Point:
         self.trashcnt = 0
         self.s_food = [0,0,0,0,0]
         self.tip = 0
+        self.total_point = 0
+
+class Alba:
+    def __init__(self):
+        self.image = load_image('ALBA_sprite.png')
+        
+
+        pass
