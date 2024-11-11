@@ -2,45 +2,51 @@ from pico2d import *
 import game_world
 
 class Ballon:
-    global image
     def __init__(self):
         self.get_food = False
         self.x = 50
         self.y = 800
         self.frame = 0
+        self.framesize = 96
+        self.image = load_image('resource/Ballon.png')
     def draw(self):
-        image.clip_draw(self.frame * 96,2 * 160,96,160,50,self.y,40,50)
+        self.image.clip_draw(self.frame * self.framesize,0,self.framesize,160,50,self.y,40,50)
 
     def update(self):
         self.frame = (self.frame + 1) % 4
 
 class Girl:
-    global image
     def __init__(self):
         self.get_food = False
         self.x = 50
         self.y = 800
         self.frame = 0
+        self.framesize = 96
+        self.image = load_image('resource/Girl.png')
     def draw(self):
-        image.clip_draw(self.frame * 96,1 * 160,96,160,50,self.y,40,50)
+        self.image.clip_draw(self.frame * self.framesize,0,self.framesize,160,50,self.y,40,50)
+    
     def update(self):
-        self.x += self.velocity
+        self.frame = (self.frame + 1) % 4
+        self.y -= 5
+        if self.y < 25:
+            self. y = 800
 
-        if self.x < 25 or self.x > 800 - 25:
-            game_world.remove_object(self)
-            
 class Chunsik:
-    global image
     def __init__(self):
         self.get_food = False
         self.x = 50
         self.y = 800
         self.frame = 0
+        self.framesize = 96
+        self.image = load_image('resource/Chunsik.png')
     def draw(self):
-        image.clip_draw(self.frame * 96,0 * 160,96,160,50,self.y,40,50)
+        self.image.clip_draw(self.frame * self.framesize,0,self.framesize,160,50,self.y,40,50)
 
     def update(self):
-        self.x += self.velocity
-
-        if self.x < 25 or self.x > 800 - 25:
-            game_world.remove_object(self)
+        if self.get_food == False and self.y > 400:
+            self.y -= 5
+        elif self.get_food == True and self.y <= 400:
+            self.y -= 5
+        if self.y < 25:
+            self. y = 800

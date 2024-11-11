@@ -67,9 +67,9 @@ def init():
     point = Point()
     map = Map()
     worker = Worker(map)
-
+    game_world.add_object(map,0)
     game_world.add_object(worker,1)
-    game_framework.push_mode(alba_mode)    
+    game_framework.push_mode(alba_mode)
 
 def finish():
     game_world.clear()

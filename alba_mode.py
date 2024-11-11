@@ -1,8 +1,7 @@
 from pico2d import *
 import game_world
-import ball
 import game_framework
-import play_mode
+import main_play
 from pannel import Pannel
 def init():
     global pannel
@@ -26,13 +25,15 @@ def handle_events():
                 case pico2d.SDLK_ESCAPE:
                     game_framework.pop_mode()
                 case pico2d.SDLK_0:
-                    play_mode.boy.set_item('Ballon')
-                    game_framework.pop_mode()
+                    main_play.map.set_alba('None')
                 case pico2d.SDLK_1:
-                    play_mode.boy.set_item('Girl')
+                    main_play.map.set_alba('Ballon')
                     game_framework.pop_mode()
                 case pico2d.SDLK_2:
-                    play_mode.boy.set_item('ChunSik')
+                    main_play.map.set_alba('Girl')
+                    game_framework.pop_mode()
+                case pico2d.SDLK_3:
+                    main_play.map.set_alba('ChunSik')
                     game_framework.pop_mode()
 def draw():
     clear_canvas()
