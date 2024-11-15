@@ -130,9 +130,10 @@ class Worker:
                 self.fry.clip_composite_draw(0,0,self.frame_size,self.frame_size,PI/2 * (i + 2),'',(self.x + self.frame_x+2) * 75 + xgap, (self.y + self.frame_y) * 67 + 75 + ygap)
             elif self.plate[i] == 8:#물
                 self.water.clip_composite_draw(0,0,self.frame_size,self.frame_size,PI/2 * (i + 2),'',(self.x + self.frame_x+2) * 75 + xgap, (self.y + self.frame_y) * 67 + 75 + ygap)
-       # 음식그리기
+       # 음식 게이지 그리기
         for i in range(5):
-            self.gaze.clip_draw(self.cook_step[i] * 32,0,32,96,700,400,20,100)
+            
+            self.gaze.clip_draw(self.cook_step[i] * 32,96 * (i % 2),32,96,737,461 - int((self.frame_size + 4.5) * i),20,self.frame_size + 4)
 
-    def get_bb(self):
+    def get_bb(self): 
         return 0, 0, 1600-1, 50

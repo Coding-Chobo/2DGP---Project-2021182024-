@@ -1,6 +1,9 @@
 from pico2d import *
 import game_framework
+import game_world
 import random
+
+from alba import Chunsik ,Ballon , Girl
 
 # Action Speed
 TIME_PER_ACTION = 1.0
@@ -67,7 +70,17 @@ class Map:
         return False
 
     def set_alba(self, alba):
-        self.alba = alba
+        if alba == 'ChunSik':
+            self.alba = Chunsik()
+        elif alba == 'Ballon':
+            self.alba = Ballon()
+        elif alba == 'Girl':
+            self.alba = Girl()
+        self.alba.select = True
+        game_world.add_object(self.alba,1)
+        
+        
+
     def draw(self):
         self.image.clip_draw(0,0,self.world_width,self.world_height,self.world_width / 2,self.world_height / 2)
         for i in range(0,6):

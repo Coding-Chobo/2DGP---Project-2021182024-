@@ -43,13 +43,13 @@ def handle_events():
                 case pico2d.SDLK_0:
                     play_mode.map.set_alba('None')
                 case pico2d.SDLK_1:
-                    play_mode.map.set_alba('Ballon')
+                    play_mode.map.set_alba('ChunSik')
                     game_framework.pop_mode()
                 case pico2d.SDLK_2:
-                    play_mode.map.set_alba('Girl')
+                    play_mode.map.set_alba('Ballon')
                     game_framework.pop_mode()
                 case pico2d.SDLK_3:
-                    play_mode.map.set_alba('ChunSik')
+                    play_mode.map.set_alba('Girl')
                     game_framework.pop_mode()
 def draw():
     clear_canvas()
