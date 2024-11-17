@@ -1,4 +1,9 @@
 from pico2d import *
+import game_framework
+TIME_PER_ACTION = 0.2
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
+
 class Worker:
     def __init__(self,game_map):
         self.image = load_image('resource/character.png')
@@ -29,7 +34,7 @@ class Worker:
     def update(self):
         if self.dir == 1:  # 왼쪽으로 이동
             if self.frame_x > -1:
-                self.frame_x -= self.speed
+                self.frame_x -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
             else:
                 self.frame_x = 0
                 self.x -= 1
@@ -37,7 +42,7 @@ class Worker:
         elif self.dir == 2:  # 오른쪽으로 이동
             if self.map.is_walkable(int(self.x + 1), int(self.y)):
                 if self.frame_x < 1:
-                    self.frame_x += self.speed
+                    self.frame_x += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
                 else:
                     self.frame_x = 0
                     self.x += 1
@@ -45,7 +50,7 @@ class Worker:
         elif self.dir == 3:  # 아래쪽으로 이동
             if self.map.is_walkable(int(self.x), int(self.y - 1)):
                 if self.frame_y > -1:
-                    self.frame_y -= self.speed
+                    self.frame_y -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
                 else:
                     self.y -= 1
                     self.dir = 0
@@ -53,7 +58,7 @@ class Worker:
         elif self.dir == 4:  # 위쪽으로 이동
             if self.map.is_walkable(int(self.x), int(self.y + 1)):
                 if self.frame_y < 1:
-                    self.frame_y += self.speed
+                    self.frame_y += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
                 else:
                     self.frame_y = 0
                     self.y += 1
