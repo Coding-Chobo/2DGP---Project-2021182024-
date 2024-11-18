@@ -39,9 +39,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             match event.key:
                 case pico2d.SDLK_ESCAPE:
-                    game_framework.pop_mode()
-                case pico2d.SDLK_0:
-                    play_mode.map.set_alba('None')
+                    game_framework.quit()
                 case pico2d.SDLK_1:
                     play_mode.map.set_alba('ChunSik')
                     game_framework.pop_mode()
