@@ -19,7 +19,7 @@ class Ballon:
     def draw(self):
         self.image.clip_draw(int(self.frame) * self.framesize,0,self.framesize,160,self.x,self.y)
 
-    def update(self):
+    def update(self):   
         self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 4
 
 class Girl:
@@ -38,8 +38,8 @@ class Girl:
         self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 4
         if self.select :
             self.y -= 10 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
-        if self.y < 25:
-            self. y = 650
+        if self.y < 75:
+            self. y = 630
 
 class Chunsik:
     def __init__(self):
@@ -60,8 +60,8 @@ class Chunsik:
                 self.y -= 10 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
             elif self.get_food == True and self.y <= 300:
                 self.y -= 10 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
-        if self.y < 25:
-            self. y = 650
+        if self.y < 75:
+            self. y = 630
 
 class Background:
     def __init__(self):
