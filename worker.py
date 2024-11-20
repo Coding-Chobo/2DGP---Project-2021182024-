@@ -31,6 +31,7 @@ class Worker:
         self.cook_step = [0, 0, 0, 0, 0]
         self.cook_type = 10
 
+        self.font = load_font('ENCR10B.TTF', 8)
     def update(self):
         if self.dir == 1:  # 왼쪽으로 이동
             if self.frame_x > -1:
@@ -40,29 +41,26 @@ class Worker:
                 self.x -= 1
                 self.dir = 0
         elif self.dir == 2:  # 오른쪽으로 이동
-            if self.map.is_walkable(int(self.x + 1), int(self.y)):
-                if self.frame_x < 1:
-                    self.frame_x += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
-                else:
-                    self.frame_x = 0
-                    self.x += 1
-                    self.dir = 0
+            if self.frame_x < 1:
+                self.frame_x += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
+            else:
+                self.frame_x = 0
+                self.x += 1
+                self.dir = 0
         elif self.dir == 3:  # 아래쪽으로 이동
-            if self.map.is_walkable(int(self.x), int(self.y - 1)):
-                if self.frame_y > -1:
-                    self.frame_y -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
-                else:
-                    self.y -= 1
-                    self.dir = 0
-                    self.frame_y = 0
+            if self.frame_y > -1:
+                self.frame_y -= FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
+            else:
+                self.y -= 1
+                self.frame_y = 0
+                self.dir = 0
         elif self.dir == 4:  # 위쪽으로 이동
-            if self.map.is_walkable(int(self.x), int(self.y + 1)):
-                if self.frame_y < 1:
-                    self.frame_y += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
-                else:
-                    self.frame_y = 0
-                    self.y += 1
-                    self.dir = 0
+            if self.frame_y < 1:
+                self.frame_y += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * self.speed
+            else:
+                self.y += 1
+                self.frame_y = 0
+                self.dir = 0
         #음식 만들기 단계
         if self.cook_type >= 0 and self.cook_type < 5:
             if self.cook_type % 2 == 0:
@@ -137,8 +135,11 @@ class Worker:
                 self.water.clip_composite_draw(0,0,self.frame_size,self.frame_size,PI/2 * (i + 2),'',(self.x + self.frame_x+2) * 75 + xgap, (self.y + self.frame_y) * 67 + 75 + ygap)
        # 음식 게이지 그리기
         for i in range(5):
-            
             self.gaze.clip_draw(self.cook_step[i] * 32,96 * (i % 2),32,96,737,461 - int((self.frame_size + 4.5) * i),20,self.frame_size + 4)
+        for i in range(40):
+            for j in range(40):
+                #self.font.draw(j * 20,i * 20,f'{j * 20}',(0 ,0 ,0))
+                pass
 
     def get_bb(self): 
         return 0, 0, 1600-1, 50
