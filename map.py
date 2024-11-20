@@ -4,6 +4,7 @@ import game_world
 import random
 
 from alba import Chunsik ,Ballon , Girl
+from table import Table, Guest
 
 # Action Speed
 TIME_PER_ACTION = 0.5
@@ -18,10 +19,10 @@ class Map:
         self.menu_frame = 0
         self.data = [
             [1, 1, 1, 1, 1, 1, 0, 9],
-            [1, (2, 0), 0, (2,1), 0, (2,2), 0, 8],
+            [1, (2,0), 0, (2,1), 0, (2,2), 0, 8],
             [1, 1, 0, 1, 0, 1, 0, 7],
-            [0, 0, 0, 0, 0, 0, 0, 6],
-            [0, 0, 0, 0, 0, 0, 0, 5],
+            [10, 0, 0, 0, 0, 0, 0, 6],
+            [10, 0, 0, 0, 0, 0, 0, 5],
             [1, 1, 0, 1, 0, 1, 0, 4],
             [1, (2,3), 0, (2,4), 0, (2,5), 0, 3],
             [1, 1, 1, 1, 1, 1, 1, 1]
@@ -35,14 +36,13 @@ class Map:
                 self.tables[o].y = 1
             else : 
                 self.tables[o].y = 6
-            print("x :",self.tables[o].x,", y :",self.tables[o].y)
-        self.get_table_limit_time = 100
+        self.get_table_limit_time = 150
         self.get_table_time = 0
 
         self.alba = Ballon()
-
         self.world_width = 800
         self.world_height = 800
+
     def update(self):
         self.menu_frame = (self.menu_frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         tablelist = []  # 조건문 바깥에서 먼저 초기화
@@ -51,32 +51,35 @@ class Map:
             if self.get_table_time < self.get_table_limit_time:
                     self.get_table_time = (self.get_table_time + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
             else:  # 일정 시간이 넘어가면 빈 테이블을 찾아 정보 초기화
+                self.get_table_time = 0 
                 for b in range(6):
                     if not self.tables[b].is_active:
                         tablelist.append(b)
                 # 빈 테이블이 있을 때만 선택
                 if tablelist:
+                    #빈테이블 중 랜덤 테이블 정하기
                     i = random.choice(tablelist)
-                    print(i)
+                    t =  self.tables[i]
                     tablelist.clear()
+                    t.is_active = True
+                    #게스트 수 정하기
                     c = random.randint(1, 2)
-                    self.tables[i].is_active = True
-                    self.tables[i].guest_amount = c
-                    order = 0
-                    for a in range(c):
-                        b = random.randint(1, 2)
-                        order += b
+                    t.guest_amount = c 
+                    for _ in range(c):
+                        t.guest[_] = Guest()
+                        #t.guest[_].
+                    print(f'table_number = {i}')
+                    print(f'amount = {t.guest_amount}')
                 else:
                     print("모든 테이블이 활성 상태입니다.")
-                self.get_table_time = 0 
-    
-    def is_walkable(self,x,y):
-        if 0 <= y < len(self.data) and 0 <= x < len(self.data[y]):
-            cell = self.data[y][x]
-            if isinstance(cell, int):
-                return cell == 0  # 숫자 0일 경우만 이동 가능
-            elif isinstance(cell, tuple):
-                return cell[0] == 0  # 튜플의 첫 번째 요소가 0일 경우만 이동 가능
+            for o in range(6):
+                self.tables[o].update()
+                
+
+
+    def is_walkable(self,cell):
+        if isinstance(cell, int):
+            return cell == 0 or cell == 10  # 숫자 0일 경우만 이동 가능
         return False
 
     def set_alba(self, alba):
@@ -97,64 +100,7 @@ class Map:
                                        self.world_width - self.menu_gap-8,(6-i) * (self.menu_size + 4) + 56,#x,y
                                        self.menu_gap,self.menu_gap)#width,height - 화면안에서 너비
         for i in range(6):
-            self.tables[i].draw()
-
-class Table:
-    def __init__(self):
-        self.image = load_image('resource/table_sprite.png')
-        self.x = 0
-        self.y = 0
-        self.order = {}
-        self.step = 0
-        self.clean_status = 0
-        self.waiting_time = 0
-        self.is_active = False
-        self.status = 2
-        self.guest_amount = 0
-        self.guest_frame_size = 128
-        self.guest = [None,None]
+            if self.tables[i].is_active :
+               self.tables[i].draw()
         
-    def update(self):
-        if self.is_active:
-            self.waiting_time += 1
-            if self.waiting_time == 150:
-                if self.status == 0:
-                    self.reset_status()
-                    
-                self.status -= 1
-                print(self.status)
-                self.waiting_time = 0
-    def draw(self):
-        if self.clean_status != 0:
-            self.image.clip_draw((3- self.clean_status) * 200,0,200,120,self.x,self.y)
-        if self.is_active : 
-            for o in self.guest :
-                pass
-                #o.image.clipdraw()
-                #(self.status * self.guest_frame_size,o * 2 * self.guest_frame_size,self.guest_frame_size,self.guest_frame_size)
 
-    def reset_status(self):
-        self.order = {}
-        self.step = 0
-        self.waiting_time = 0
-        self.is_active = False
-        self.status = 2
-        self.guest_amount = 0
-        self.guest = [None,None]
-
-class Guest:
-    def __init__(self,type = 1):
-        self.type = type
-        self.guset1_image = load_image('resource/guest1_sprite.png')   
-        self.guset2_image = load_image('resource/guest2_sprite.png')      
-        if self.type == 1:
-            self.image = self.guset1_image
-        elif self.type == 2:
-            self.image = self.guset2_image
-
-        self.frame_size = 128
-        self.frame = 0  
-    def update(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 2
-    def draw(self):
-        pass
