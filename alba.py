@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 
 # Action Speed
-TIME_PER_ACTION = 1.5
+TIME_PER_ACTION = 1.2
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
 
