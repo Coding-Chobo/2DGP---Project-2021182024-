@@ -1,8 +1,12 @@
 from pico2d import *
 import game_framework
-TIME_PER_ACTION = 0.1
+TIME_PER_ACTION = 0.2
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
+
+TIME_PER_ACTION_a = 1.5
+ACTION_PER_TIME_a = 1.0 / TIME_PER_ACTION_a
+FRAMES_PER_ACTION_a = 8
 
 class Worker:
     def __init__(self,game_map):
@@ -23,6 +27,8 @@ class Worker:
         self.dir = 0
         self.speed = 0.2
 
+        self.frame = 0
+        self.frame_a = 0
         self.frame_x = 0
         self.frame_y = 0
         self.frame_size = 64
@@ -95,10 +101,14 @@ class Worker:
                 self.plate[i] = self.plate[i - 1]
             self.plate[0] = temp
             self.rotate = False
-
+        self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 3
+        self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 2
     def draw(self):
         #플레이어 그리기
         self.image.draw((self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
+        self.arrow.clip_draw(int(self.frame_a) * 64,0,64,64,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
+        self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
+
         #만들어지는 메뉴 스프라이트 그리기
         for i in range(5):
             if self.cook_step[i] > 0:
@@ -106,7 +116,7 @@ class Worker:
                                               ,self.frame_size,self.frame_size,
                                                661,(6-i) * (self.frame_size + 4) + 56)
         #들고있는 메뉴그리기
-        gap = 50
+        gap = 45
         for i in range(4):
             if i == 0 or i == 2:
                 if i == 0:
