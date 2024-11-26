@@ -6,7 +6,12 @@ import random
 from alba import Chunsik ,Ballon , Girl
 from table import Table, Guest
 
-# Action Speed
+# MenuSprite Speed
+TIME_PER_ACTION_m = 1.0
+ACTION_PER_TIME_m = 1.0 / TIME_PER_ACTION_m
+FRAMES_PER_ACTION_m = 2
+
+# Table Speed
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 6
@@ -28,7 +33,7 @@ class Map:
             [1, 1, 1, 1, 1, 1, 1, 1]
         ]
         #테이블 세팅
-        self.menu_gap = 92
+        self.menu_gap = 76
         self.tables = [Table() for i in range(6)]
         for o in range(6):
             self.tables[o].x = (o % 3) * 2 + 1
@@ -44,7 +49,7 @@ class Map:
         self.world_height = 800
 
     def update(self):
-        self.menu_frame = (self.menu_frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.menu_frame = (self.menu_frame + FRAMES_PER_ACTION_m * ACTION_PER_TIME_m * game_framework.frame_time) % 3
         tablelist = []  # 조건문 바깥에서 먼저 초기화
         if self.alba.select :
          # 일정 시간마다 빈 테이블을 찾아서 손님 넣기
@@ -97,7 +102,7 @@ class Map:
         for i in range(0,6):
             self.menu_sprite.clip_draw(i * self.menu_size,int(self.menu_frame) * self.menu_size, #left, bottom
                                        self.menu_size,self.menu_size, #width,height - png안에서 너비
-                                       self.world_width - self.menu_gap-8,(6-i) * (self.menu_size + 4) + 56,#x,y
+                                       self.world_width - 100,(6-i) * (self.menu_size + 3) + 55,#x,y
                                        self.menu_gap,self.menu_gap)#width,height - 화면안에서 너비
         for i in range(6):
             if self.tables[i].is_active :
