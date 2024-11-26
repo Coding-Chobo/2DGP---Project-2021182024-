@@ -1,12 +1,19 @@
 from pico2d import *
 import game_framework
+#플레이어 이동을 위한 프레임
 TIME_PER_ACTION = 0.2
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
+#플레이어 애니메이션을 위한 프레임
 TIME_PER_ACTION_a = 1.5
 ACTION_PER_TIME_a = 1.0 / TIME_PER_ACTION_a
 FRAMES_PER_ACTION_a = 8
+
+#플레이어 화살표를 위한 스프라이트
+TIME_PER_ACTION_b = 1.5
+ACTION_PER_TIME_b = 1.0 / TIME_PER_ACTION_b
+FRAMES_PER_ACTION_b = 8
 
 class Worker:
     def __init__(self,game_map):
@@ -29,6 +36,7 @@ class Worker:
 
         self.frame = 0
         self.frame_a = 0
+        self.frame_b = 0        
         self.frame_x = 0
         self.frame_y = 0
         self.frame_size = 64
@@ -103,18 +111,18 @@ class Worker:
             self.rotate = False
             print(f'{self.x}, {self.y}')
         self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 3
+        self.frame_b = (self.frame_b + FRAMES_PER_ACTION_b*ACTION_PER_TIME_b*game_framework.frame_time) % 2     
     def draw(self):
         #플레이어 그리기
-        #self.image.draw((self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
         self.image.clip_draw(int(self.frame_a) * 96,0,96,128,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
         #화살표 그리기
-        if self.y == 6 or self.y == 1:            
-            self.arrow.clip_draw(int(self.frame_a) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
-            self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+        if self.y == 6 or self.y == 1:
+            self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+            self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         elif (self.x == 6):
-            self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+            self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         elif (self.x == 0):
-            self.arrow.clip_draw(int(self.frame_a) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+            self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         #만들어지는 메뉴 스프라이트 그리기
         for i in range(5):
             if self.cook_step[i] > 0:
