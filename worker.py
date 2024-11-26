@@ -10,7 +10,7 @@ FRAMES_PER_ACTION_a = 8
 
 class Worker:
     def __init__(self,game_map):
-        self.image = load_image('resource/character.png')
+        self.image = load_image('resource/PlayerSheet.png')
         self.arrow = load_image('resource/arrow.png')
         self.cooking_sprite = load_image('resource/food_sprite.png')
         self.kimbap = load_image('resource/kimbap.png')
@@ -102,11 +102,12 @@ class Worker:
             self.plate[0] = temp
             self.rotate = False
             print(f'{self.x}, {self.y}')
-        self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 3
-        self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 2
+        self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 3
     def draw(self):
         #플레이어 그리기
-        self.image.draw((self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
+        #self.image.draw((self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
+        self.image.clip_draw(int(self.frame_a) * 96,0,96,128,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
+        #화살표 그리기
         if self.y == 6 or self.y == 1:            
             self.arrow.clip_draw(int(self.frame_a) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
             self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
@@ -151,6 +152,7 @@ class Worker:
        # 음식 게이지 그리기
         for i in range(5):
             self.gaze.clip_draw(self.cook_step[i] * 32,96 * (i % 2),32,96,737,461 - int((self.frame_size + 4.5) * i),20,self.frame_size + 4)
+        #좌표값을 구하기 위해 좌표값표시
         for i in range(40):
             for j in range(40):
                 #self.font.draw(j * 20,i * 20,f'{j * 20}',(0 ,0 ,0))
