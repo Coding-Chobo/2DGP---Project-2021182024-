@@ -101,14 +101,19 @@ class Worker:
                 self.plate[i] = self.plate[i - 1]
             self.plate[0] = temp
             self.rotate = False
+            print(f'{self.x}, {self.y}')
         self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 3
         self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 2
     def draw(self):
         #플레이어 그리기
         self.image.draw((self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
-        self.arrow.clip_draw(int(self.frame_a) * 64,0,64,64,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
-        self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
-
+        if self.y == 6 or self.y == 1:            
+            self.arrow.clip_draw(int(self.frame_a) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+            self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+        elif (self.x == 6):
+            self.arrow.clip_draw(int(self.frame_a) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+        elif (self.x == 0):
+            self.arrow.clip_draw(int(self.frame_a) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         #만들어지는 메뉴 스프라이트 그리기
         for i in range(5):
             if self.cook_step[i] > 0:
@@ -117,6 +122,7 @@ class Worker:
                                                661,(6-i) * (self.frame_size + 4) + 56)
         #들고있는 메뉴그리기
         gap = 45
+        PI = 3.14159265358979
         for i in range(4):
             if i == 0 or i == 2:
                 if i == 0:
@@ -130,7 +136,6 @@ class Worker:
                 else:
                     ygap = gap                
                 xgap = 0
-            PI = 3.14159265358979
             if self.plate[i] == 3: #라면
                 self.ramen.clip_composite_draw(0,0,self.frame_size,self.frame_size,PI/2 * (i + 2),'',(self.x + self.frame_x+2) * 75 + xgap, (self.y + self.frame_y) * 67 + 75 + ygap)
             elif self.plate[i] == 4: #순대
