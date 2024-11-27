@@ -68,6 +68,12 @@ def handle_events():
                     if worker.x == 6:
                         if worker.y >= 1 and worker.y <= 6:
                             worker.cook_type = map.data[worker.y][worker. x + 1] - 3
+                            if worker.cook_type % 2 == 0:
+                                if worker.cook_step[worker.cook_type] < 5:
+                                    worker.making = True
+                            else : 
+                                if worker.cook_step[worker.cook_type] < 4:
+                                    worker.making = True
 
 def init():
     global worker

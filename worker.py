@@ -10,10 +10,16 @@ TIME_PER_ACTION_a = 1.5
 ACTION_PER_TIME_a = 1.0 / TIME_PER_ACTION_a
 FRAMES_PER_ACTION_a = 8
 
-#플레이어 화살표를 위한 스프라이트
+#플레이어 화살표를 위한 프레임
 TIME_PER_ACTION_b = 1.5
 ACTION_PER_TIME_b = 1.0 / TIME_PER_ACTION_b
 FRAMES_PER_ACTION_b = 8
+
+#음식제작하는 손을 그리기 위한 프레임
+TIME_PER_ACTION_h = 0.5
+ACTION_PER_TIME_h = 1.0 / TIME_PER_ACTION_h
+FRAMES_PER_ACTION_h = 6
+
 
 class Worker:
     def __init__(self,game_map):
@@ -27,7 +33,7 @@ class Worker:
         self.ramen = load_image('resource/ramen.png')
         self.water = load_image('resource/water.png')
         self.gaze = load_image('resource/gaze_sprite.png')
-
+        self.hand = load_image('resource/Hand-Sheet.png')
         self.map = game_map
         self.plate = [0, 0, 0, 0]        
         self.x, self.y = 4,3
@@ -36,12 +42,15 @@ class Worker:
 
         self.frame = 0
         self.frame_a = 0
-        self.frame_b = 0        
+        self.frame_b = 0
+        self.frame_h = 0        
         self.frame_x = 0
         self.frame_y = 0
         self.frame_size = 64
         self.rotate = False
         self.arrow_active = False
+        self.making = False
+        self.making_time = 0
         self.cook_step = [0, 0, 0, 0, 0]
         self.cook_type = 10
 
@@ -111,7 +120,15 @@ class Worker:
             self.rotate = False
             print(f'{self.x}, {self.y}')
         self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 3
-        self.frame_b = (self.frame_b + FRAMES_PER_ACTION_b*ACTION_PER_TIME_b*game_framework.frame_time) % 2     
+        self.frame_b = (self.frame_b + FRAMES_PER_ACTION_b*ACTION_PER_TIME_b*game_framework.frame_time) % 2
+        if self.making == True:
+            self.frame_h = (self.frame_h + FRAMES_PER_ACTION_h*ACTION_PER_TIME_h*game_framework.frame_time) % 2 
+            if self.making_time < FRAMES_PER_ACTION_h:
+                self.making_time += FRAMES_PER_ACTION_h*ACTION_PER_TIME_h*game_framework.frame_time
+            else:
+                self.making_time = 0
+                self.making = False
+                self.frame_h = 0
     def draw(self):
         #플레이어 그리기
         self.image.clip_draw(int(self.frame_a) * 96,0,96,128,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
@@ -160,6 +177,10 @@ class Worker:
             self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         elif (self.x == 0):
             self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+        #음식 만드는 손 그리기
+        if self.making == True:
+            self.hand.clip_draw(int(self.frame_h) * 64,0,64,64,(self.x + 2) * 75 + 15,(self.y) * 67 + 75)
+        
         #좌표값을 구하기 위해 좌표값표시
         for i in range(40):
             for j in range(40):
