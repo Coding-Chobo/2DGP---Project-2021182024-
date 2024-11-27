@@ -32,7 +32,7 @@ class Girl:
         self.image = load_image('resource/Girl.png')
         self.select = False
     def draw(self):
-        self.image.clip_draw(int(self.frame) * self.framesize,0,self.framesize,160,self.x,self.y,72,140)
+        self.image.clip_draw(int(self.frame) * self.framesize,0,self.framesize,160,self.x,self.y,84,140)
     
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 4
