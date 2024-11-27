@@ -115,14 +115,6 @@ class Worker:
     def draw(self):
         #플레이어 그리기
         self.image.clip_draw(int(self.frame_a) * 96,0,96,128,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)
-        #화살표 그리기
-        if self.y == 6 or self.y == 1:
-            self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
-            self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
-        elif (self.x == 6):
-            self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
-        elif (self.x == 0):
-            self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         #만들어지는 메뉴 스프라이트 그리기
         for i in range(5):
             if self.cook_step[i] > 0:
@@ -160,6 +152,14 @@ class Worker:
        # 음식 게이지 그리기
         for i in range(5):
             self.gaze.clip_draw(self.cook_step[i] * 32,96 * (i % 2),32,96,737,461 - int((self.frame_size + 4.5) * i),20,self.frame_size + 4)
+                #화살표 그리기
+        if self.y == 6 or self.y == 1:
+            self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+            self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+        elif (self.x == 6):
+            self.arrow.clip_draw(int(self.frame_b) * 64,64,64,64,(self.x + self.frame_x+2) * 75 + 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
+        elif (self.x == 0):
+            self.arrow.clip_draw(int(self.frame_b) * 64, 0,64,64,(self.x + self.frame_x+2) * 75 - 30 ,(self.y + self.frame_y) * 67 + 55,48,48)
         #좌표값을 구하기 위해 좌표값표시
         for i in range(40):
             for j in range(40):
