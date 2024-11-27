@@ -42,14 +42,14 @@ def handle_events():
 
                 elif event.key == SDLK_RIGHT:
                     cell = map.data[7 - worker.y][worker.x + 1]
-                    if isinstance(cell, tuple):
+                    if isinstance(cell, tuple) and worker.making == False:
                         table_number = cell[1]
                         t = map.tables[table_number]
                         if t.is_active:
                             if t.check_order(worker.plate[2]):                               
                                 worker.plate[2] = 0
                     else: 
-                        if map.is_walkable(cell) :
+                        if map.is_walkable(cell) and worker.making == False:
                             worker.dir = 2  
                         elif map.data[worker.y][worker.x + 1] == 9: #쓰레기통
                             if worker.plate[2] != 0:
@@ -57,11 +57,11 @@ def handle_events():
                             
                 elif event.key == SDLK_UP:
                     cell  = map.data[(worker.y + 1)][worker.x]
-                    if map.is_walkable(cell):
+                    if map.is_walkable(cell) and worker.making == False:
                         worker.dir = 4
                 elif event.key == SDLK_DOWN:
                     cell  = map.data[(worker.y - 1)][worker.x]
-                    if map.is_walkable(cell):
+                    if map.is_walkable(cell) and worker.making == False:
                         worker.dir = 3
                 #음식 제조 및 상호작용키
                 elif event.key == SDLK_SPACE:
@@ -71,7 +71,7 @@ def handle_events():
                             if worker.cook_type % 2 == 0:
                                 if worker.cook_step[worker.cook_type] < 5:
                                     worker.making = True
-                            else : 
+                            elif worker.cook_type != 5 : 
                                 if worker.cook_step[worker.cook_type] < 4:
                                     worker.making = True
 
