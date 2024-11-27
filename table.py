@@ -15,6 +15,7 @@ class Table:
     def __init__(self):
         self.image = load_image('resource/table_sprite.png')
         self.cloud = load_image('resource/Cloud.png')
+        self.order_sprite = load_image('resource/Order_Food.png')
         self.x = 0
         self.y = 0
         self.order = {8:1}
@@ -53,26 +54,34 @@ class Table:
                 if type(o) == Guest:
                     o.update()            
     def draw(self):
+        #테이블 쓰레기 스프라이트 그리기
         if self.step == 3:
             self.image.clip_draw((3- self. clean_status) * 200,0
                                  ,200,120
                                  ,210 + 154 * (self.x // 2),63 + 67 * (7 - self.y)
                                  ,90,60)
-        if self.step == 2:
-            self.cloud.clip_draw(int(self.frame) * 200,0
-                                 ,200,120
-                                 ,210 + 154 * (self.x // 2),63 + 67 * (7 - self.y)
-                                 ,150,120)
+        #게스트 그리기
         if self.is_active : 
             if self.step <= 2:
+                if self.step > 0:
+                    second = 0
+                    for key, value in self.order.items():
+                        self.order_sprite.clip_draw((7-key)*64,0,64,64,212 + 154 * (self.x // 2) -20 + second * 45,63 + 67 * (7 - self.y),50,50)
+                        second += 1                
                 a = 0
                 for o in self.guest :
                     if type(o) == Guest:
                         o.image.clip_draw(self.status * self.guest_frame_size,a * 2 * self.guest_frame_size + int(o.frame) * self.guest_frame_size,
                                          self.guest_frame_size,self.guest_frame_size,
-                                         213 + 152 * (self.x // 2),63 + 67 * (7 - self.y) + 46 - 106 * a,
+                                         214 + 152 * (self.x // 2),63 + 67 * (7 - self.y) + 46 - 106 * a,
                                          120,120)                                      
                         a += 1
+        #먹을때 구름 그리기
+        if self.step == 2:
+            self.cloud.clip_draw(int(self.frame) * 200,0
+                                 ,200,120
+                                 ,210 + 154 * (self.x // 2),63 + 67 * (7 - self.y)
+                                 ,150,120)
 
     def reset_status(self):
         self.order = {8:1}
