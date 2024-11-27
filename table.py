@@ -16,6 +16,7 @@ class Table:
         self.image = load_image('resource/table_sprite.png')
         self.cloud = load_image('resource/Cloud.png')
         self.order_sprite = load_image('resource/Order_Food.png')
+        self.font = load_font('ENCR10B.TTF', 16)
         self.x = 0
         self.y = 0
         self.order = {8:1}
@@ -67,7 +68,9 @@ class Table:
                     second = 0
                     for key, value in self.order.items():
                         self.order_sprite.clip_draw((7-key)*64,0,64,64,212 + 154 * (self.x // 2) -20 + second * 45,63 + 67 * (7 - self.y),50,50)
-                        second += 1                
+                        if value > 0:
+                            self.font.draw(212 + 154 * (self.x // 2) -10 + second * 45,75 + 67 * (7 - self.y),f'{value}',(0,0,0))                
+                        second += 1
                 a = 0
                 for o in self.guest :
                     if type(o) == Guest:
