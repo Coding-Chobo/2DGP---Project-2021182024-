@@ -43,7 +43,7 @@ class Map:
                 self.tables[o].y = 6
         self.get_table_limit_time = 150
         self.get_table_time = 0
-
+        self.percent = 70
         self.alba = Ballon()
         self.world_width = 800
         self.world_height = 800
@@ -91,8 +91,10 @@ class Map:
         if alba == 'ChunSik':
             self.alba = Chunsik()
         elif alba == 'Ballon':
+            self.get_table_limit_time = 130
             self.alba = Ballon()
         elif alba == 'Girl':
+            self.percent = 55
             self.alba = Girl()
         self.alba.select = True
         game_world.add_object(self.alba,1)

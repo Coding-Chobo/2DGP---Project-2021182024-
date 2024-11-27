@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-import game_world
+import play_mode
 import random
 
 TIME_PER_ACTION = 0.2
@@ -24,13 +24,14 @@ class Table:
         self.clean_status = 0
         self.eating_time = 0
         self.waiting_time = 0
+        self.waiting_limit = 200
         self.is_active = False
         self.status = 2
         self.frame = 0
         self.guest_amount = 0
         self.guest_frame_size = 128
         self.guest = [None,None]
-        
+        self.percent = 70
     def update(self):
         if self.is_active:
             if self.step == 2:
@@ -44,7 +45,7 @@ class Table:
             #테이블의 대기시간에 따른 상태변화
             elif self.step < 2:
                 self.waiting_time += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
-                if self.waiting_time > 200: 
+                if self.waiting_time > self.waiting_limit: 
                     if self.status == 0:
                         self.reset_status()
                     else:     
@@ -138,7 +139,11 @@ class Table:
 
 class Guest:
     def __init__(self):
-        self.type = random.randint(1, 2)
+        percent = random.randint(0,100)       
+        if percent < play_mode.map.percent:
+            self.type = 1
+        else :
+            self.type = 2
         self.guset1_image = load_image('resource/guest1_sprite.png')   
         self.guset2_image = load_image('resource/guest2_sprite.png')      
         if self.type == 1:
