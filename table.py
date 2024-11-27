@@ -14,46 +14,65 @@ FRAMES_PER_ACTIONG = 8
 class Table:
     def __init__(self):
         self.image = load_image('resource/table_sprite.png')
+        self.cloud = load_image('resource/Cloud.png')
         self.x = 0
         self.y = 0
         self.order = {8:1}
         self.step = 0
         self.clean_status = 0
+        self.eating_time = 0
         self.waiting_time = 0
         self.is_active = False
         self.status = 2
+        self.frame = 0
         self.guest_amount = 0
         self.guest_frame_size = 128
         self.guest = [None,None]
         
     def update(self):
         if self.is_active:
+            if self.step == 2:
+                self.frame = (self.frame + FRAMES_PER_ACTIONG*ACTION_PER_TIMEG*game_framework.frame_time) % 2
+                if self.eating_time < 60:
+                    self.eating_time += (FRAMES_PER_ACTIONG*ACTION_PER_TIMEG*game_framework.frame_time)
+                else :
+                    self.eating_time = 0
+                    self.frame = 0
+                    self. step = 3
+            #테이블의 대기시간에 따른 상태변화
+            elif self.step < 2:
+                self.waiting_time += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
+                if self.waiting_time > 200: 
+                    if self.status == 0:
+                        self.reset_status()
+                    else:     
+                        self.status -= 1
+                        self.waiting_time = 0
+            #게스트 업데이트
             for o in self.guest :
                 if type(o) == Guest:
-                    o.update()
-            #test를 위해서 0을 곱함
-            self.waiting_time += 0 * FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
-            if self.waiting_time > 200: 
-                if self.status == 0:
-                    self.reset_status()
-                else:     
-                    self.status -= 1
-                    self.waiting_time = 0
+                    o.update()            
     def draw(self):
-        if self.step == 2:
+        if self.step == 3:
             self.image.clip_draw((3- self. clean_status) * 200,0
                                  ,200,120
                                  ,210 + 154 * (self.x // 2),63 + 67 * (7 - self.y)
                                  ,90,60)
+        if self.step == 2:
+            self.cloud.clip_draw(int(self.frame) * 200,0
+                                 ,200,120
+                                 ,210 + 154 * (self.x // 2),63 + 67 * (7 - self.y)
+                                 ,150,120)
         if self.is_active : 
-            a = 0
-            for o in self.guest :
-                if type(o) == Guest:
-                    o.image.clip_draw(self.status * self.guest_frame_size,a * 2 * self.guest_frame_size + int(o.frame) * self.guest_frame_size,
-                                     self.guest_frame_size,self.guest_frame_size,
-                                     213 + 152 * (self.x // 2),63 + 67 * (7 - self.y) + 46 - 106 * a,
-                                     120,120)                                      
-                    a += 1
+            if self.step <= 2:
+                a = 0
+                for o in self.guest :
+                    if type(o) == Guest:
+                        o.image.clip_draw(self.status * self.guest_frame_size,a * 2 * self.guest_frame_size + int(o.frame) * self.guest_frame_size,
+                                         self.guest_frame_size,self.guest_frame_size,
+                                         213 + 152 * (self.x // 2),63 + 67 * (7 - self.y) + 46 - 106 * a,
+                                         120,120)                                      
+                        a += 1
 
     def reset_status(self):
         self.order = {8:1}
@@ -67,12 +86,21 @@ class Table:
 
     def get_order(self):
         self.order = {}
-        print(self.order)
+        available_menus = list(range(3, 8))
+
+        # 손님 수가 메뉴 수보다 적을 경우, 손님 수만큼 고르고 아니면 메뉴 전체를 다 고른다
+        if self.guest_amount <= len(available_menus):
+            selected_menus = random.sample(available_menus, self.guest_amount)
+        else:
+            raise ValueError("손님 수가 메뉴 수보다 많아서 메뉴를 중복 없이 고를 수 없습니다.")
+
+        # 메뉴를 손님과 매칭
         for a in range(self.guest_amount):
-            self.order[random.randint(0, 4) + 3] = self.guest[a].type
-        print(self.order)
+            self.order[selected_menus[a]] = self.guest[a].type
+            print(self.order)
+
     def check_order(self,food):
-        if self.step == 2 and self.clean_status > 0:
+        if self.step == 3 and self.clean_status > 0:
             self.clean_status -=1
             if self.clean_status <= 0:
                 self.reset_status()
