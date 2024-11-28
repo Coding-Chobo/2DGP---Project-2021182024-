@@ -37,9 +37,8 @@ def handle_events():
                         #달봉이(배달부)에게 전달
                         if map.data[7 - worker.y][worker.x] == 10:
                             if type(map.alba) == Chunsik:
-                                print('춘식이 인식')
-                        
-
+                                if map.alba.check_order(worker.plate[0]):
+                                    worker.plate[0] = 0
                 elif event.key == SDLK_RIGHT:
                     cell = map.data[7 - worker.y][worker.x + 1]
                     if isinstance(cell, tuple) and worker.making == False:
@@ -54,7 +53,6 @@ def handle_events():
                         elif map.data[worker.y][worker.x + 1] == 9: #쓰레기통
                             if worker.plate[2] != 0:
                                 worker.plate[2] = 0
-                            
                 elif event.key == SDLK_UP:
                     cell  = map.data[(worker.y + 1)][worker.x]
                     if map.is_walkable(cell) and worker.making == False:
