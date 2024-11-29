@@ -17,6 +17,7 @@ class Ballon:
         self.framesize = 96
         self.image = load_image('resource/Ballon.png')
         self.select = False
+    
     def draw(self):
         self.image.clip_draw(int(self.frame) * self.framesize,0,self.framesize,160,self.x,self.y,84,140)
 
@@ -32,6 +33,7 @@ class Girl:
         self.framesize = 96
         self.image = load_image('resource/Girl.png')
         self.select = False
+   
     def draw(self):
         self.image.clip_draw(int(self.frame) * self.framesize,0,self.framesize,160,self.x,self.y,84,140)
     
@@ -62,6 +64,7 @@ class Chunsik:
         self.order = {}
         self.delivery_time = 0
         self.regen_time = 20
+    
     def draw(self):
         self.image.clip_draw(int(self.frame) * self.framesize,0,self.framesize,160,self.x,self.y,84,140)
         if self.step == 1: 
@@ -103,6 +106,7 @@ class Chunsik:
         for item in menu:
             self.order[item] = 1
         print(self.order)
+    
     def check_order(self,food):
         if food in self.order and self.order[food] > 0:
             self.order[food] -= 1

@@ -119,8 +119,7 @@ class Worker:
             self.plate[0] = temp
             self.rotate = False
             print(f'{self.x}, {self.y}')
-        self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 3
-        self.frame_b = (self.frame_b + FRAMES_PER_ACTION_b*ACTION_PER_TIME_b*game_framework.frame_time) % 2
+        #음식 만드는 손 애니메이션
         if self.making == True:
             self.frame_h = (self.frame_h + FRAMES_PER_ACTION_h*ACTION_PER_TIME_h*game_framework.frame_time) % 2 
             if self.making_time < FRAMES_PER_ACTION_h:
@@ -129,6 +128,9 @@ class Worker:
                 self.making_time = 0
                 self.making = False
                 self.frame_h = 0
+    
+        self.frame_a = (self.frame_a + FRAMES_PER_ACTION_a*ACTION_PER_TIME_a*game_framework.frame_time) % 3
+        self.frame_b = (self.frame_b + FRAMES_PER_ACTION_b*ACTION_PER_TIME_b*game_framework.frame_time) % 2
     def draw(self):
         #플레이어 그리기
         self.image.clip_draw(int(self.frame_a) * 96,0,96,128,(self.x + self.frame_x+2) * 75 ,(self.y + self.frame_y) * 67 + 75)

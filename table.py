@@ -32,6 +32,7 @@ class Table:
         self.guest_frame_size = 128
         self.guest = [None,None]
         self.percent = 70
+    
     def update(self):
         if self.is_active:
             if self.step == 2:
@@ -55,6 +56,7 @@ class Table:
             for o in self.guest :
                 if type(o) == Guest:
                     o.update()            
+    
     def draw(self):
         #테이블 쓰레기 스프라이트 그리기
         if self.step == 3:
@@ -62,7 +64,7 @@ class Table:
                                  ,200,120
                                  ,210 + 154 * (self.x // 2),63 + 67 * (7 - self.y)
                                  ,90,60)
-        #게스트 그리기
+        #게스트 그리기 & 주문한 음식 그리기
         if self.is_active : 
             if self.step <= 2:
                 if self.step > 0:
@@ -153,7 +155,9 @@ class Guest:
 
         self.frame_size = 128
         self.frame = 0  
+    
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTIONG*ACTION_PER_TIMEG*game_framework.frame_time) % 2
+    
     def draw(self):
         pass
