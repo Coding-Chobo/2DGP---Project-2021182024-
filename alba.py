@@ -97,7 +97,7 @@ class Chunsik:
             #밑으로 사라진 후 리젠 타임 계산
             if self.step == 3:
                 self.delivery_time += FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
-                if self.delivery_time > self.regen_time :
+                if self.delivery_time > self.regen_time and play_mode.map.time_h < 16:
                     self.step = 0
                     self.delivery_time = 0
                     self.y = 620

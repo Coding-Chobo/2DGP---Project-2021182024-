@@ -61,7 +61,7 @@ class Map:
          # 일정 시간마다 빈 테이블을 찾아서 손님 넣기
             if self.get_table_time < self.get_table_limit_time:
                     self.get_table_time = (self.get_table_time + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
-            else:  # 일정 시간이 넘어가면 빈 테이블을 찾아 정보 초기화
+            elif self.time_h < 16:  # 일정 시간이 넘어가면 빈 테이블을 찾아 정보 초기화
                 self.get_table_time = 0 
                 for b in range(6):
                     if not self.tables[b].is_active:
@@ -87,10 +87,11 @@ class Map:
             for o in range(6):
                 self.tables[o].update()
             #게임월드 시간 측정
-            self.time_m += game_framework.frame_time
+            if self.time_h < 16:
+                self.time_m += game_framework.frame_time
             if self.time_m >= 60:
                 self.time_h += 1
-                self.time_m = 0
+                self.time_m = 0     
                 
 
 
@@ -118,7 +119,7 @@ class Map:
                                        self.menu_size,self.menu_size, #width,height - png안에서 너비
                                        self.world_width - 100,(6-i) * (self.menu_size + 3) + 55,#x,y
                                        self.menu_gap,self.menu_gap)#width,height - 화면안에서 너비
-        self.font.draw(640,560,f'{self.time_h}    {int(self.time_m)}',(255,255,255))
+        self.font.draw(640,560,f'{self.time_h}  {int(self.time_m)}',(255,255,255))
         for i in range(6):
             if self.tables[i].is_active :
                self.tables[i].draw()
