@@ -8,6 +8,7 @@ import alba_mode
 from map import Map
 from worker import Worker
 from alba import Chunsik ,Ballon ,Girl
+from point import Point
 
 # boy = None
 
@@ -53,6 +54,7 @@ def handle_events():
                         elif map.data[worker.y][worker.x + 1] == 9: #쓰레기통
                             if worker.plate[2] != 0:
                                 worker.plate[2] = 0
+                                point.trash += 1
                 elif event.key == SDLK_UP:
                     cell  = map.data[(worker.y + 1)][worker.x]
                     if map.is_walkable(cell) and worker.making == False:
@@ -76,13 +78,15 @@ def handle_events():
 def init():
     global worker
     global map
-
+    global point
     map = Map()
     game_world.add_object(map, 0)
 
     worker = Worker(map)
     game_world.add_object(worker, 1)
 
+    point = Point()
+    game_world.add_object(point, 1)
     game_framework.push_mode(alba_mode)
 
 
