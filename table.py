@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import play_mode
 import random
+import point
 
 TIME_PER_ACTION = 0.2
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -32,7 +33,7 @@ class Table:
         self.guest_frame_size = 128
         self.guest = [None,None]
         self.percent = 70
-    
+        
     def update(self):
         if self.is_active:
             if self.step == 2:
@@ -118,9 +119,12 @@ class Table:
         if self.step == 3 and self.clean_status > 0:
             self.clean_status -=1
             if self.clean_status <= 0:
+                play_mode.point.clean_table += 1
                 self.reset_status()
         elif food in self.order and self.order[food] > 0:
             self.order[food] -= 1
+            print(food)
+            play_mode.point.get_point(food)
             self.is_finish()
             return True
 
