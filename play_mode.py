@@ -5,6 +5,7 @@ import game_framework
 
 import game_world
 import alba_mode
+import howtoplay
 import final_mode
 from map import Map
 from worker import Worker
@@ -88,7 +89,7 @@ def init():
 
     point = Point()
     game_world.add_object(point, 1)
-    game_framework.push_mode(alba_mode)
+    game_framework.push_mode(howtoplay)
 
 
 
@@ -99,7 +100,7 @@ def finish():
 
 def update():
     game_world.update()
-    if map.time_h == 16:
+    if map.time_h == 13 and all(not o.is_active for o in map.tables):
         game_framework.push_mode(final_mode)
     game_world.handle_collisions()
 
