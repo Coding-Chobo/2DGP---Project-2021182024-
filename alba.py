@@ -1,4 +1,5 @@
 from pico2d import *
+import play_mode
 import random
 import game_framework
 
@@ -110,6 +111,7 @@ class Chunsik:
     def check_order(self,food):
         if food in self.order and self.order[food] > 0:
             self.order[food] -= 1
+            play_mode.point.get_point(food)
             if all(value == 0 for value in self.order.values()):
                 self.order = {}
                 self.step += 1
