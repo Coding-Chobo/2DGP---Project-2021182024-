@@ -41,7 +41,7 @@ class Girl:
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time) % 4
         if self.select :
-            self.y -= 10 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
+            self.y -= 8 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
         if self.y < 75:
             self. y = 630
 
@@ -59,7 +59,7 @@ class Chunsik:
         self.framesize = 96
         self.image = load_image('resource/Chunsik.png')
         self.order_sprite = load_image('resource/Order_Food.png') 
-        self.font = load_font('ENCR10B.TTF', 16)
+        self.font = load_font('resource/ENCR10B.TTF', 16)
         self.select = False
 
         self.order = {}
@@ -82,7 +82,7 @@ class Chunsik:
             #위에서 내려오기 시작
             if self.step == 0:
                 if self.y > 300:
-                    self.y -= 5 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
+                    self.y -= 8 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
                 else :
                     self.y = 300
                     self.step += 1
@@ -90,7 +90,7 @@ class Chunsik:
             #음식받고 배달 시작
             if self.step == 2:
                 if self.y > 70 :
-                    self.y -= 5 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
+                    self.y -= 8 * FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
                 else : 
                     self.step = 3
                     self.y = 1000
