@@ -17,7 +17,7 @@ class Table:
         self.image = load_image('resource/table_sprite.png')
         self.cloud = load_image('resource/Cloud.png')
         self.order_sprite = load_image('resource/Order_Food.png')
-        self.font = load_font('ENCR10B.TTF', 16)
+        self.font = load_font('resource/ENCR10B.TTF', 16)
         self.x = 0
         self.y = 0
         self.order = {8:1}
@@ -48,7 +48,10 @@ class Table:
             elif self.step < 2:
                 self.waiting_time += FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time
                 if self.waiting_time > self.waiting_limit: 
-                    if self.status == 0:
+                    if self.status == 0: #손님 회나서 나가기
+                        play_mode.point.totalstatus -= 2
+                        if play_mode.point.totalstatus < 0:
+                            play_mode.point.totalstatus = 0
                         self.reset_status()
                     else:     
                         self.status -= 1
@@ -141,6 +144,7 @@ class Table:
                     self.waiting_time = 0
                     self.status += 1 
                     self.step = 2
+                    play_mode.point.totalstatus += self.status
                     print("주문을 전부 받았습니다.")
 
 class Guest:

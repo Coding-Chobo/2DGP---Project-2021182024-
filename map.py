@@ -20,8 +20,14 @@ class Map:
     def __init__(self):
         self.image = load_image('resource/map.png')
         self.menu_sprite = load_image('resource/menu_sprite.png')
+        self.bgm = load_music('resource/background_music.mp3')
+        self.font = load_font('resource/ENCR10B.TTF', 16)
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
         self.menu_size = 64
         self.menu_frame = 0
+        self.time_m = 0
+        self.time_h = 12
         self.data = [
             [1, 1, 1, 1, 1, 1, 0, 9],
             [1, (2,0), 0, (2,1), 0, (2,2), 0, 8],
@@ -80,6 +86,11 @@ class Map:
                     print("모든 테이블이 활성 상태입니다.")
             for o in range(6):
                 self.tables[o].update()
+            #게임월드 시간 측정
+            self.time_m += game_framework.frame_time
+            if self.time_m >= 60:
+                self.time_h += 1
+                self.time_m = 0
                 
 
 
@@ -107,6 +118,7 @@ class Map:
                                        self.menu_size,self.menu_size, #width,height - png안에서 너비
                                        self.world_width - 100,(6-i) * (self.menu_size + 3) + 55,#x,y
                                        self.menu_gap,self.menu_gap)#width,height - 화면안에서 너비
+        self.font.draw(640,560,f'{self.time_h}    {int(self.time_m)}',(255,255,255))
         for i in range(6):
             if self.tables[i].is_active :
                self.tables[i].draw()
