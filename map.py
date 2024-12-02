@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 import game_world
 import random
-
+import play_mode
 from alba import Chunsik ,Ballon , Girl
 from table import Table, Guest
 
@@ -69,6 +69,7 @@ class Map:
                     t.is_active = True
                     #게스트 수 정하기
                     c = random.randint(1, 2)
+                    play_mode.point.guest_totalamount += c
                     t.guest_amount = c 
                     for _ in range(c):
                         t.guest[_] = Guest()
