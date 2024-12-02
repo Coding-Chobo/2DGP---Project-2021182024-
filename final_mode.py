@@ -14,7 +14,7 @@ def init():
     global point
 
     image = load_image('resource/tuk_credit.png')
-    large_font = load_font('resource/ENCR10B.TTF', 24)
+    large_font = load_font('resource/Google.TTF', 24)
     small_font = load_font('resource/ENCR10B.TTF', 16)
     running = True
     blink = True

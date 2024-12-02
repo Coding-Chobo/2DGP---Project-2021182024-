@@ -22,7 +22,7 @@ class Map:
         self.image = load_image('resource/map.png')
         self.menu_sprite = load_image('resource/menu_sprite.png')
         self.bgm = load_music('resource/background_music.mp3')
-        self.font = load_font('resource/ENCR10B.TTF', 16)
+        self.font = load_font('resource/Google.TTF', 16)
         self.bgm.set_volume(30)
         self.bgm.repeat_play()
         self.menu_size = 64
