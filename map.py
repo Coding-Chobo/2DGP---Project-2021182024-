@@ -3,6 +3,7 @@ import game_framework
 import game_world
 import random
 import play_mode
+import final_mode
 from alba import Chunsik ,Ballon , Girl
 from table import Table, Guest
 
@@ -28,6 +29,9 @@ class Map:
         self.menu_frame = 0
         self.time_m = 0
         self.time_h = 12
+        self.limit_hour = 13
+        self.end = False
+
         self.data = [
             [1, 1, 1, 1, 1, 1, 0, 9],
             [1, (2,0), 0, (2,1), 0, (2,2), 0, 8],
@@ -61,7 +65,7 @@ class Map:
          # 일정 시간마다 빈 테이블을 찾아서 손님 넣기
             if self.get_table_time < self.get_table_limit_time:
                     self.get_table_time = (self.get_table_time + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time)
-            elif self.time_h < 16:  # 일정 시간이 넘어가면 빈 테이블을 찾아 정보 초기화
+            elif self.time_h < 13:  # 일정 시간이 넘어가면 빈 테이블을 찾아 정보 초기화
                 self.get_table_time = 0 
                 for b in range(6):
                     if not self.tables[b].is_active:
@@ -87,11 +91,15 @@ class Map:
             for o in range(6):
                 self.tables[o].update()
             #게임월드 시간 측정
-            if self.time_h < 16:
+            if self.time_h < self.limit_hour:
                 self.time_m += game_framework.frame_time
             if self.time_m >= 60:
                 self.time_h += 1
-                self.time_m = 0     
+                self.time_m = 0
+            if self.time_h >= self.limit_hour and all(not o.is_active for o in self.tables):
+                play_mode.point.save_point()
+                game_framework.push_mode(final_mode)
+                
                 
 
 

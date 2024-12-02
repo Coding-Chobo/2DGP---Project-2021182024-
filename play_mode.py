@@ -4,7 +4,7 @@ from pico2d import *
 import game_framework
 
 import game_world
-import alba_mode
+import logo_mode
 import howtoplay
 import final_mode
 from map import Map
@@ -99,9 +99,11 @@ def finish():
 
 
 def update():
+    dd = False
     game_world.update()
-    if map.time_h == 13 and all(not o.is_active for o in map.tables):
-        game_framework.push_mode(final_mode)
+    if map.end:
+        game_world.clear()
+        game_framework.change_mode(logo_mode)
     game_world.handle_collisions()
 
 
