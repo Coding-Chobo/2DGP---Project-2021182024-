@@ -5,6 +5,7 @@ import game_framework
 
 import game_world
 import alba_mode
+import final_mode
 from map import Map
 from worker import Worker
 from alba import Chunsik ,Ballon ,Girl
@@ -98,6 +99,8 @@ def finish():
 
 def update():
     game_world.update()
+    if map.time_h == 16:
+        game_framework.push_mode(final_mode)
     game_world.handle_collisions()
 
 

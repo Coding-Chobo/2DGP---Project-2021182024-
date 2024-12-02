@@ -54,7 +54,7 @@ class Worker:
         self.cook_step = [0, 0, 0, 0, 0]
         self.cook_type = 10
 
-        self.font = load_font('ENCR10B.TTF', 8)
+        self.font = load_font('resource/ENCR10B.TTF', 8)
     def update(self):
         if self.dir == 1:  # 왼쪽으로 이동
             if self.frame_x > -1:
