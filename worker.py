@@ -188,6 +188,3 @@ class Worker:
             for j in range(40):
                 #self.font.draw(j * 20,i * 20,f'{j * 20}',(0 ,0 ,0))
                 pass
-
-    def get_bb(self): 
-        return 0, 0, 1600-1, 50
