@@ -95,9 +95,9 @@ class Chunsik:
                     self.step = 3
                     self.y = 1000
             #밑으로 사라진 후 리젠 타임 계산
-            if self.step == 3:
+            if self.step == 3 and play_mode.map.time_h < play_mode.map.limit_hour:
                 self.delivery_time += FRAMES_PER_ACTION*ACTION_PER_TIME*game_framework.frame_time
-                if self.delivery_time > self.regen_time and play_mode.map.time_h < 16:
+                if self.delivery_time > self.regen_time:
                     self.step = 0
                     self.delivery_time = 0
                     self.y = 620
