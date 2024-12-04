@@ -41,7 +41,9 @@ def draw():
 def handle_events():
     events = get_events()
     for event in events:
-        if event.type == SDL_KEYDOWN:
+        if event.type == SDL_QUIT:
+            game_framework.quit()
+        elif event.type == SDL_KEYDOWN:
              match event.key:
                 case pico2d.SDLK_SPACE:
                     game_framework.change_mode(alba_mode)

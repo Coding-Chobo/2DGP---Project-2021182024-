@@ -12,13 +12,15 @@ def init():
     global blink
     global time
     global point
+    global x
 
-    image = load_image('resource/tuk_credit.png')
-    large_font = load_font('resource/Google.TTF', 24)
-    small_font = load_font('resource/ENCR10B.TTF', 16)
+    image = load_image('resource/final_page.png')
+    large_font = load_font('resource/Bold.TTF', 24)
+    small_font = load_font('resource/Bold.TTF', 16)
     running = True
     blink = True
     time = 0
+    x = 130
     point = play_mode.point
 
 def finish():
@@ -29,6 +31,9 @@ def update():
     global running
     global blink
     global time
+    
+    
+
     if running:
         time = (time + game_framework.frame_time)
         if time > 0.5:
@@ -40,33 +45,42 @@ def draw():
     image.draw(400,400)
     for i in range(5):
         if i == 0 or i == 2:
-            small_font.draw(200,450 - 50 * i,f'x {point.amount_sell[i]} = {point.amount_sell[i] * 2700}')
+            small_font.draw(x,515 - 48 * i,f'x {point.amount_sell[i]} = {point.amount_sell[i] * 2700}')
         else :
-            small_font.draw(200,450 - 50 * i,f'x {point.amount_sell[i]} = {point.amount_sell[i] * 3200}')
-    small_font.draw(200,250,f'x {point.trash} = {point.trash * 2000}')
-    large_font.draw(200,200,f'{point.totalpoint}')
-    large_font.draw(200,150,f'{point.guest_totalamount}')
-    large_font.draw(200,100,f'{point.totalstatus}')
+            small_font.draw(x,515 - 48 * i,f'x {point.amount_sell[i]} = {point.amount_sell[i] * 3200}')
+    small_font.draw(x ,275,f'x {point.trash} = -{point.trash * 2000}',(255,50,50))
+    large_font.draw(x - 30 ,200,f'{point.food_money}')
+    large_font.draw(x - 30,150,f'{point.guest_totalamount}')
+    large_font.draw(x - 30,100,f'{point.totalstatus}')
+    small_font.draw(x + 260,208,f'{point.food_money}')
+    small_font.draw(x + 260,208 - 30,f'{point.totalstatus * 1000}')
+    small_font.draw(x + 260,208 - 30 * 2,f'- {point.trash * 2000}', (255,50,50))
+    small_font.draw(x + 260,208 - 30 * 3,f'-10000', (255,50,50))
+    large_font.draw(x + 260,205 - 30 * 4,f'{point.totalpoint}')
+    small_font.draw(x + 170, 118,'Worker')
+    large_font.draw(x + 170, 85,'Total')
 
-        # 랭킹 데이터를 파일에서 불러오고 정렬
-    if os.path.exists('game.sav'):
-        with open('game.sav', 'rb') as f:
+    # 랭킹 데이터를 파일에서 불러오고 정렬
+    if os.path.exists('save/game.sav'):
+        with open('save/game.sav', 'rb') as f:
             ranking = pickle.load(f)  # 저장된 점수 리스트
-        ranking.sort(reverse=True)  # 내림차순 정렬
+        
 
         # 랭킹 출력
-        small_font.draw(500, 550, 'Rankings:', )
+        large_font.draw(405, 515, 'Ranking Top 5', )
         for idx, score in enumerate(ranking[:5]):  # 상위 5개 점수 출력
-            small_font.draw(500, 500 - idx * 20, f'{idx + 1}. {score}')
+            small_font.draw(410, 468 - idx * 47.2, f'{idx + 1}         {score}')
  
     if blink:
-        large_font.draw(250,50,'Press Space for Next')
+        large_font.draw(250,30,'Press Space for New Game',(255,255,122))
     update_canvas()
 
 def handle_events():
     events = get_events()
     for event in events:
-        if event.type == SDL_KEYDOWN:
+        if event.type == SDL_QUIT:
+            game_framework.quit()
+        elif event.type == SDL_KEYDOWN:
              match event.key:
                 case pico2d.SDLK_SPACE:
                     play_mode.map.end = True
