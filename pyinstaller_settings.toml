@@ -9,6 +9,6 @@ data_files = [
 
 # 3. 데이타가 들어있는 폴더들을 지정하세요.
 data_folders = [
-'resource'
+'resource', 'save'
 ]
-
+icon_file = "C:/Users/PC/Documents/pyinstaller/dist/main/resource/logo.ico"

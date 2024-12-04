@@ -30,12 +30,12 @@ except:
     print(f'설정 파일 {settings_file} 파일을 읽는 과정에서 문제가 발생했습니다. 파일 존재 및 이상 여부를 확인하세요. 변환을 중단합니다.')
     exit(-1)
 
-
 # 설정된 파일들이 실제 존재하는지 체크
 
 print(f'메인 소스 파일: {main_file}')
 print(f'데이터 파일: {data_files}')
 print(f'데이터 폴더: {data_folders}')
+
 
 if not os.path.exists(main_file):
     print(f'메인 파일 {main_file}이 존재하지 않습니다. 변환을 중단합니다.')
@@ -58,6 +58,7 @@ work_path = os.path.expanduser('~') + '/Documents/pyinstaller/build'
 # dist_path = dist_path.replace('\\', '/')
 # work_path = work_path.replace('\\', '/')
 
+icon_file = config.get('icon_file', None)
 
 PyInstaller.__main__.run([
     main_file,
@@ -67,8 +68,10 @@ PyInstaller.__main__.run([
     '--python-option=O',
     f'--distpath={dist_path}',
     f'--workpath={work_path}',
-    '--noconsole'
+    '--noconsole',
+    f'--icon={icon_file}' if icon_file else ''
 ])
+
 
 print('3. 관련 파일들을 복사합니다......')
 
@@ -89,4 +92,3 @@ for dn in data_folders:
 
 print('4. 변환이 완료됐습니다......')
 print(f'출력 폴더: File "{dist_path}", line {0}')
-
