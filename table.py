@@ -110,8 +110,6 @@ class Table:
         # 손님 수가 메뉴 수보다 적을 경우, 손님 수만큼 고르고 아니면 메뉴 전체를 다 고른다
         if self.guest_amount <= len(available_menus):
             selected_menus = random.sample(available_menus, self.guest_amount)
-        else:
-            raise ValueError("손님 수가 메뉴 수보다 많아서 메뉴를 중복 없이 고를 수 없습니다.")
 
         # 메뉴를 손님과 매칭
         for a in range(self.guest_amount):
@@ -138,14 +136,13 @@ class Table:
                     self.waiting_time = 0
                     self.status += 1
                     self.step = 1
-                    print("물을 받았습니다.")
                 elif self.step == 1:
                     self.clean_status = 3
                     self.waiting_time = 0
                     self.status += 1 
                     self.step = 2
                     play_mode.point.totalstatus += self.status
-                    print("주문을 전부 받았습니다.")
+                    
 
 class Guest:
     def __init__(self):
